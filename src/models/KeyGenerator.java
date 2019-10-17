@@ -24,36 +24,18 @@ import java.sql.*;
 @Path("/generate")
 //@ApplicationPath("rest")
 public class KeyGenerator {
-	
+	private static String dburl="jdbc:mysql://localhost:3306/keydb?useSSL=false&useLegacyDatetimeCode=false&useJDBCCompliantTimezoneShift=true&serverTimezone=UTC";
 	static Connection c= null;
 	
-	/*public static void main(String[] args) {
-       
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-		
-			String url="jdbc:mysql://localhost:3306/keydb?useSSL=false&useLegacyDatetimeCode=false&useJDBCCompliantTimezoneShift=true&serverTimezone=UTC";
-		
-			c=DriverManager.getConnection(url,"root","password");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        save(0,"aaaaaaaaa");
-
-    }*/
 	
+	//connection to the database
 	public static void connect() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 		
-			String url="jdbc:mysql://localhost:3306/keydb?useSSL=false&useLegacyDatetimeCode=false&useJDBCCompliantTimezoneShift=true&serverTimezone=UTC";
 			
-			c=DriverManager.getConnection(url,"root","password");
+			
+			c=DriverManager.getConnection(dburl,"root","password");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -63,7 +45,9 @@ public class KeyGenerator {
 			e.printStackTrace();
 		}
 	}
-
+	
+	
+	//the key generation method
 	@GET
 	//@Produces("application/json;charset=UTF-8")
 	@Produces({MediaType.TEXT_PLAIN})
@@ -97,7 +81,7 @@ public class KeyGenerator {
         return result;
     }
     
-    
+    //fetch data from database method
     @GET
 	@Path("/show/{id}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -123,7 +107,7 @@ public class KeyGenerator {
     	return "{\"keys\":"+result+"}";
     }
     
-    
+    //delete a key method
     @GET
    	@Path("/delete/{id}/{key}")
     @Produces(MediaType.TEXT_PLAIN)
@@ -142,6 +126,7 @@ public class KeyGenerator {
     	return r;
 	}
 	
+    // save a key in database method
 	@GET
 	@Path("/save/{id}/{name}/{key}")
 	@Produces({MediaType.TEXT_PLAIN})
